@@ -2,17 +2,21 @@
 <p align="center">An Ai for Misskey. <a href="./torisetu.md">About Ai</a></p>
 
 ## これなに
-Misskey用の日本語Botです。
+
+Misskey 用の日本語 Bot です。
 
 ## 本家との変更点
+
 迷路の時間機能を無効化しました
 
 ## インストール
+
 > Node.js と npm と MeCab (オプション) がインストールされている必要があります。
 
 まず適当なディレクトリに `git clone` します。
 次にそのディレクトリに `config.json` を作成します。中身は次のようにします:
-``` json
+
+```json
 {
 	"host": "https:// + あなたのインスタンスのURL (末尾の / は除く)",
 	"i": "藍として動かしたいアカウントのアクセストークン",
@@ -23,19 +27,25 @@ Misskey用の日本語Botです。
 	"reversiEnabled": "藍とリバーシで対局できる機能を有効にする場合は true を入れる (無効にする場合は false)",
 	"serverMonitoring": "サーバー監視の機能を有効にする場合は true を入れる (無効にする場合は false)",
 	"mecab": "MeCab のインストールパス (ソースからインストールした場合、大体は /usr/local/bin/mecab)",
-	"mecabDic": "MeCab の辞書ファイルパス (オプション)"
+	"mecabDic": "MeCab の辞書ファイルパス (オプション)",
+	"weatherlocation": "天気予報の位置 (オプション)"
 }
 ```
+
 `npm install` して `npm run build` して `npm start` すれば起動できます
 
 ## フォント
+
 一部の機能にはフォントが必要です。藍にはフォントは同梱されていないので、ご自身でフォントをインストールディレクトリに`font.ttf`という名前で設置してください。
 
 ## 記憶
+
 藍は記憶の保持にインメモリデータベースを使用しており、藍のインストールディレクトリに `memory.json` という名前で永続化されます。
 
 ## ライセンス
+
 MIT
 
 ## Awards
+
 <img src="./WorksOnMyMachine.png" alt="Works on my machine" height="120">
