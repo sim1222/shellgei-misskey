@@ -25,8 +25,8 @@ export default class extends Module {
 			
 			const todaydate = new Date(weatherJson[0].timeSeries[0].timeDefines[0]);
 			const todayweather = weatherJson[0].timeSeries[0].areas[1].weathers[0];
-			const todaytemphigh = weatherJson[0].timeSeries[2].areas[1].temps[0];
-			const todaytemplow = weatherJson[0].timeSeries[2].areas[1].temps[1];
+			const todaytemphigh = weatherJson[0].timeSeries[2].areas[1].temps[1];
+			const todaytemplow = weatherJson[0].timeSeries[2].areas[1].temps[0];
 
 			msg.reply(todaydate + 'の天気は\n' + todayweather + `\n` + '最高気温' + todaytemphigh + '℃、最低気温' + todaytemplow + `℃です！`, {
 				immediate: true
