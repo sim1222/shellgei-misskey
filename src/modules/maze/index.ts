@@ -18,25 +18,25 @@ export default class extends Module {
 		};
 	}
 
-	//@autobind
-	//private async post() {
-	//	const now = new Date();
-	//	if (now.getHours() !== 22) return;
-	//	const date = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`;
-	//	const data = this.getData();
-	//	if (data.lastPosted == date) return;
-	//	data.lastPosted = date;
-	//	this.setData(data);
-	//
-	//	this.log('Time to maze');
-	//	const file = await this.genMazeFile(date);
-	//
-	//	this.log('Posting...');
-	//	this.ai.post({
-	//		text: serifs.maze.post,
-	//		fileIds: [file.id]
-	//	});
-	//}
+	@autobind
+	private async post() {
+		const now = new Date();
+		if (now.getHours() !== 22) return;
+		const date = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`;
+		const data = this.getData();
+		if (data.lastPosted == date) return;
+		data.lastPosted = date;
+		this.setData(data);
+	
+		this.log('Time to maze');
+		const file = await this.genMazeFile(date);
+	
+		this.log('Posting...');
+		this.ai.post({
+			text: serifs.maze.post,
+			fileIds: [file.id]
+		});
+	}
 
 	@autobind
 	private async genMazeFile(seed, size?): Promise<any> {
