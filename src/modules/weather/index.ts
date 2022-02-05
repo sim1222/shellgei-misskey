@@ -1,12 +1,11 @@
 import autobind from 'autobind-decorator';
 import Module from '@/module';
 import Message from '@/message';
-import serifs from '@/serifs';
 import config from '@/config';
 import json from 'json';
 
 export default class extends Module {
-	public readonly name = '';
+	public readonly name = 'weather';
 
 	@autobind
 	public install() {
