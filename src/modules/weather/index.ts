@@ -3,6 +3,7 @@ import Module from '@/module';
 import Message from '@/message';
 import config from '@/config';
 import json from 'json';
+import fetch from 'node-fetch';
 
 export default class extends Module {
 	public readonly name = 'weather';
