@@ -10,8 +10,8 @@ export default class extends Module {
 
 	@autobind
 	public install() {
-		this.post();
-		setInterval(this.post, 1000 * 60 * 3);
+		//this.post();
+		//setInterval(this.post, 1000 * 60 * 3);
 
 		return {
 			mentionHook: this.mentionHook
