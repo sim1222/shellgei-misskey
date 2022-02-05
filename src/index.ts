@@ -88,9 +88,8 @@ promiseRetry(retry => {
 		new SleepReportModule(),
 		new NotingModule(),
 		new PollModule(),
-		new WeatherModule(),
 		new ReminderModule(),
-		
+		new WeatherModule(),
 	]);
 }).catch(e => {
 	log(chalk.red('Failed to fetch the account'));
