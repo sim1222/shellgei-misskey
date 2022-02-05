@@ -3,7 +3,7 @@ import Module from '@/module';
 import Message from '@/message';
 import serifs from '@/serifs';
 import config from '@/config';
-import json from '@/json';
+import json from 'json';
 
 export default class extends Module {
 	public readonly name = '';
