@@ -40,6 +40,7 @@ promiseRetry(retry => {
 	retries: 3
 }).then(account => {
 	const acct = `@${account.username}`;
+	export default acct;
 	log(chalk.green(`Account fetched successfully: ${chalk.underline(acct)}`));
 
 	log('Starting AiOS...');
