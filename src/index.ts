@@ -14,6 +14,7 @@ const pkg = require('../package.json');
 import CoreModule from './modules/core';
 import PingModule from './modules/ping';
 import FollowModule from './modules/follow';
+import ShellGeiModule from './modules/shellgei';
 
 console.log('   __    ____  _____  ___ ');
 console.log('  /__\\  (_  _)(  _  )/ __)');
@@ -48,7 +49,7 @@ promiseRetry(retry => {
 		new CoreModule(),
 		new PingModule(),
 		new FollowModule(),
-
+		new ShellGeiModule(),
 	]);
 }).catch(e => {
 	log(chalk.red('Failed to fetch the account'));
