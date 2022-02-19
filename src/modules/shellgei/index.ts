@@ -4,8 +4,7 @@ import Message from '@/message';
 const promiseRetry = require('promise-retry');
 import * as chalk from "chalk/index";
 import config from "@/config";
-import * as request from "request-promise-native";
-import {account} from "../../../test/__mocks__/account";
+import fetch from 'node-fetch';
 
 export default class extends Module {
 	public readonly name = 'shellgei';
@@ -22,15 +21,11 @@ export default class extends Module {
 		if (!msg.text) return false;
 		if (msg.text && msg.text.includes('#シェル芸') || msg.text.includes('#shellgei')) {
 
+			const myinfo = await fetch(`${config.apiUrl}/i`);
+			const myinfoJson = await myinfo.json();
+			const myid = myinfoJson.id;
 
-		const fetch = request.post(`${config.apiUrl}/i`, {
-			json: {
-				i: config.i
-			}})
-
-			const acct = `@${fetch.username}`;
-
-
+			const acct = `@${myid}`;
 
 			const shelltext = msg.text.replace('#シェル芸', '').replace('#shellgei', '').replace(acct, '');
 			msg.reply('PONG!' + shelltext, {
