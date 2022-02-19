@@ -28,11 +28,12 @@ export default class extends Module {
 			const myId = myInfoJson.username;
 
 
-			const acct = `@${myId}`;console.log(acct);
+			const acct = `@${myId}`;
 			const hostname = config.host.replace(/^https?:\/\//, '').replace(/\/$/, '');
+			const hostnameat = `@${hostname}`;
 
 
-			const shellText = msg.text.replace('#シェル芸', '').replace('#shellgei', '').replace(acct, '').replace(acct + `@${hostname}`, '');
+			const shellText = msg.text.replace('#シェル芸', '').replace('#shellgei', '').replace(acct, '').replace(hostnameat, '');
 
 			const shellgeiBody = { code: shellText , images: [] };
 			const shellgeiOptions = { method: 'POST', body: JSON.stringify(shellgeiBody), headers: { 'Content-Type': 'application/json' } };
