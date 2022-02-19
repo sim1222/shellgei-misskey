@@ -5,6 +5,7 @@ const promiseRetry = require('promise-retry');
 import * as chalk from "chalk/index";
 import config from "@/config";
 import fetch from 'node-fetch';
+import _log from '@/utils/log';
 
 export default class extends Module {
 	public readonly name = 'shellgei';
@@ -14,6 +15,10 @@ export default class extends Module {
 		return {
 			mentionHook: this.mentionHook
 		};
+	}
+
+	function log(msg: string): void {
+		_log(`[Boot]: ${msg}`);
 	}
 
 	@autobind
@@ -33,11 +38,13 @@ export default class extends Module {
 			const hostnameat = `@${hostname}`;
 
 
-			const shellText = msg.text.replace('#シェル芸', '').replace('#shellgei', '').replace(acct, '').replace(hostnameat, '');
 
+
+			const shellText = msg.text.replace('#シェル芸', '').replace('#shellgei', '').replace(acct, '').replace(hostnameat, '');
+			log(chalk.green(`[${msg.id}] ${msg.user.name}@${msg.user.host}`));
 			const shellgeiBody = { code: shellText , images: [] };
 			const shellgeiOptions = { method: 'POST', body: JSON.stringify(shellgeiBody), headers: { 'Content-Type': 'application/json' } };
-			const shellgeiURL = `https://websh.jiro4989.com/api/shellgei`;
+			const shellgeiURL = `localhost:29999/api/shellgei`;
 			await (async () => {
 				try {
 					const shellgeiResult = await fetch(shellgeiURL, shellgeiOptions);
