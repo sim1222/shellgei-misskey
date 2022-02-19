@@ -21,17 +21,25 @@ export default class extends Module {
 		if (!msg.text) return false;
 		if (msg.text && msg.text.includes('#シェル芸') || msg.text.includes('#shellgei')) {
 
-			const body = { i: config.i };
-			const options = { method: 'POST', body: JSON.stringify(body), headers: { 'Content-Type': 'application/json' } };
-			const myinfo = await fetch(`${config.apiUrl}/i`, options);
-			const myinfoJson = await myinfo.json();
-			const myid = myinfoJson.username;
-
-			const acct = `@${myid}`;console.log(acct);
+			const myInfoBody = { i: config.i };
+			const myInfoOptions = { method: 'POST', body: JSON.stringify(myInfoBody), headers: { 'Content-Type': 'application/json' } };
+			const myInfo = await fetch(`${config.apiUrl}/i`, myInfoOptions);
+			const myInfoJson = await myInfo.json();
+			const myId = myInfoJson.username;
 
 
-			const shelltext = msg.text.replace('#シェル芸', '').replace('#shellgei', '').replace(acct, '');
-			msg.reply('PONG!' + shelltext, {
+			const acct = `@${myId}`;console.log(acct);
+
+
+			const shellText = msg.text.replace('#シェル芸', '').replace('#shellgei', '').replace(acct, '');
+
+			const shellgeiBody = { code: shellText , images: [] };
+			const shellgeiOptions = { method: 'POST', body: JSON.stringify(shellgeiBody), headers: { 'Content-Type': 'application/json' } };
+			const shellgeiResult = await fetch(`${config.apiUrl}/shellgei`, shellgeiOptions);
+
+
+
+			msg.reply( shellText , {
 				immediate: true
 			});
 			return true;
