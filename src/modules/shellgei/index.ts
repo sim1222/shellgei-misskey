@@ -35,14 +35,23 @@ export default class extends Module {
 
 			const shellgeiBody = { code: shellText , images: [] };
 			const shellgeiOptions = { method: 'POST', body: JSON.stringify(shellgeiBody), headers: { 'Content-Type': 'application/json' } };
-			const shellgeiResult = await fetch(`https://websh.jiro4989.com/api/shellgei`, shellgeiOptions);
-			const shellgeiResultJson = await shellgeiResult.json();
-			const shellgeiResultText = shellgeiResultJson.stdout;
+			const shellgeiURL = `https://websh.jiro4989.com/api/shellgei`;
+			await (async () => {
+				try {
+					const shellgeiResult = await fetch(shellgeiURL, shellgeiOptions);
+					const shellgeiResultJson = await shellgeiResult.json();
+					const shellgeiResultStdOut = shellgeiResultJson.stdout;
+					const shellgeiResultStdErr = shellgeiResultJson.stderr;
+					msg.reply(shellgeiResultStdOut + shellgeiResultStdErr, {
+						immediate: true
+					});
+
+				} catch (e) {
+					console.log(e);
+				}
+			})();
 
 
-			msg.reply( shellgeiResultText , {
-				immediate: true
-			});
 			return true;
 		} else {
 			return false;
