@@ -6,6 +6,7 @@ type Config = {
 	apiUrl: string;
 	shellgeiUrl: string;
 	memoryDir?: string;
+	weatherlocation?: string;
 };
 
 const config = require('../config.json');
