@@ -42,7 +42,7 @@ export default class extends Module {
 			this.log(chalk.green(`[${msg.id}] ${msg.user.name}@${msg.user.host}`));
 			const shellgeiBody = { code: shellText , images: [] };
 			const shellgeiOptions = { method: 'POST', body: JSON.stringify(shellgeiBody), headers: { 'Content-Type': 'application/json' } };
-			const shellgeiURL = `localhost:29999/api/shellgei`;
+			const shellgeiURL = `http://localhost:29999/api/shellgei`;
 			await (async () => {
 				try {
 					const shellgeiResult = await fetch(shellgeiURL, shellgeiOptions);
