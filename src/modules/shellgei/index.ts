@@ -27,7 +27,7 @@ export default class extends Module {
 			const myInfoBody = { i: config.i };
 			const myInfoOptions = { method: 'POST', body: JSON.stringify(myInfoBody), headers: { 'Content-Type': 'application/json' } };
 			const myInfo = await fetch(`${config.apiUrl}/i`, myInfoOptions);
-			const myInfoJson = await myInfo.json();
+			const myInfoJson: any = await myInfo.json();
 			const myId = myInfoJson.username;
 
 
@@ -46,7 +46,7 @@ export default class extends Module {
 			await (async () => {
 				try {
 					const shellgeiResult = await fetch(shellgeiURL, shellgeiOptions);
-					const shellgeiResultJson = await shellgeiResult.json();
+					const shellgeiResultJson: any = await shellgeiResult.json();
 					const shellgeiResultStdOut = shellgeiResultJson.stdout;
 					const shellgeiResultStdErr = shellgeiResultJson.stderr;
 					msg.reply(shellgeiResultStdOut + shellgeiResultStdErr, {
