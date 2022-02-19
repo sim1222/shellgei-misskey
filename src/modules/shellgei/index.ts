@@ -21,7 +21,9 @@ export default class extends Module {
 		if (!msg.text) return false;
 		if (msg.text && msg.text.includes('#シェル芸') || msg.text.includes('#shellgei')) {
 
-			const myinfo = await fetch(`${config.apiUrl}/i`);
+			const body = { i: config.i };
+			const options = { method: 'POST', body: JSON.stringify(body), headers: { 'Content-Type': 'application/json' } };
+			const myinfo = await fetch(`${config.apiUrl}/i`, options);
 			const myinfoJson = await myinfo.json();
 			const myid = myinfoJson.id;
 
