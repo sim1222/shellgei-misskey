@@ -35,7 +35,7 @@ export default class extends Module {
 
 			const shellgeiBody = { code: shellText , images: [] };
 			const shellgeiOptions = { method: 'POST', body: JSON.stringify(shellgeiBody), headers: { 'Content-Type': 'application/json' } };
-			const shellgeiResult = await fetch(`${config.apiUrl}/shellgei`, shellgeiOptions);
+			const shellgeiResult = await fetch(`https://websh.jiro4989.com/api/shellgei`, shellgeiOptions);
 			const shellgeiResultJson = await shellgeiResult.json();
 			const shellgeiResultText = shellgeiResultJson.stdout;
 
