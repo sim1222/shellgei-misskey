@@ -25,9 +25,10 @@ export default class extends Module {
 			const options = { method: 'POST', body: JSON.stringify(body), headers: { 'Content-Type': 'application/json' } };
 			const myinfo = await fetch(`${config.apiUrl}/i`, options);
 			const myinfoJson = await myinfo.json();
-			const myid = myinfoJson.id;
+			const myid = myinfoJson.username;
 
-			const acct = `@${myid}`;
+			const acct = `@${myid}`;console.log(acct);
+
 
 			const shelltext = msg.text.replace('#シェル芸', '').replace('#shellgei', '').replace(acct, '');
 			msg.reply('PONG!' + shelltext, {
