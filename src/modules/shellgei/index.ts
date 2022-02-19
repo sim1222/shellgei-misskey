@@ -1,11 +1,9 @@
 import autobind from 'autobind-decorator';
 import Module from '@/module';
 import Message from '@/message';
-const promiseRetry = require('promise-retry');
-import * as chalk from "chalk/index";
 import config from "@/config";
 import fetch from 'node-fetch';
-import _log from '@/utils/log';
+
 
 export default class extends Module {
 	public readonly name = 'shellgei';
@@ -39,7 +37,7 @@ export default class extends Module {
 
 
 			const shellText = msg.text.replace('#シェル芸', '').replace('#shellgei', '').replace(acct, '').replace(hostnameat, '');
-			this.log(chalk.green(`[${msg.id}] ${msg.user.name}@${msg.user.host}`));
+			this.log(shellText);
 			const shellgeiBody = { code: shellText , images: [] };
 			const shellgeiOptions = { method: 'POST', body: JSON.stringify(shellgeiBody), headers: { 'Content-Type': 'application/json' } };
 			const shellgeiURL = `http://localhost:29999/api/shellgei`;
