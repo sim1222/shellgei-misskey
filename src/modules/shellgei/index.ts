@@ -41,8 +41,9 @@ export default class extends Module {
 			const shellText = msg.text.replace('#シェル芸', '').replace('#shellgei', '').replace(acct, '').replace(hostnameat, '');
 			this.log(shellText);
 			const shellgeiBody = { code: shellText , images: [] };
-			const shellgeiOptions = { method: 'POST', body: JSON.stringify(shellgeiBody) , headers: { 'Content-Type': 'application/json' } };
+			const shellgeiOptions = { method: 'POST', body: JSON.stringify(shellgeiBody), headers: { 'Content-Type': 'application/json' } };
 			const shellgeiURL = config.shellgeiUrl;
+
 			await (async () => {
 				try {
 					const shellgeiResult = await fetch(shellgeiURL, shellgeiOptions);
