@@ -36,10 +36,11 @@ export default class extends Module {
 			const shellgeiBody = { code: shellText , images: [] };
 			const shellgeiOptions = { method: 'POST', body: JSON.stringify(shellgeiBody), headers: { 'Content-Type': 'application/json' } };
 			const shellgeiResult = await fetch(`${config.apiUrl}/shellgei`, shellgeiOptions);
+			const shellgeiResultJson = await shellgeiResult.json();
+			const shellgeiResultText = shellgeiResultJson.stdout;
 
 
-
-			msg.reply( shellText , {
+			msg.reply( shellgeiResultText , {
 				immediate: true
 			});
 			return true;
