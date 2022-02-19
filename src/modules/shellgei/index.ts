@@ -44,15 +44,23 @@ export default class extends Module {
 			const shellgeiOptions = { method: 'POST', body: JSON.stringify(shellgeiBody), headers: { 'Content-Type': 'application/json' } };
 			const shellgeiURL = config.shellgeiUrl;
 
+
 			await (async () => {
 				try {
 					const shellgeiResult = await fetch(shellgeiURL, shellgeiOptions);
 					const shellgeiResultJson: any = await shellgeiResult.json();
 					const shellgeiResultStdOut = shellgeiResultJson.stdout;
 					const shellgeiResultStdErr = shellgeiResultJson.stderr;
-					msg.reply(shellgeiResultStdOut + shellgeiResultStdErr, {
-						immediate: true
-					});
+					if (shellgeiResultStdOut === null && shellgeiResultStdErr === null){
+						msg.reply(`結果がありません`, {
+							immediate: true
+						});
+					} else {
+						msg.reply(shellgeiResultStdOut + shellgeiResultStdErr, {
+							immediate: true
+						});
+					}
+
 
 				} catch (e) {
 					console.log(e);
