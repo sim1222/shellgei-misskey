@@ -51,7 +51,7 @@ export default class extends Module {
 					const shellgeiResultJson: any = await shellgeiResult.json();
 					const shellgeiResultStdOut = shellgeiResultJson.stdout;
 					const shellgeiResultStdErr = shellgeiResultJson.stderr;
-					if (shellgeiResultStdOut === null && shellgeiResultStdErr === null){
+					if (shellgeiResultStdOut === "" && shellgeiResultStdErr === ""){
 						msg.reply(`結果がありません`, {
 							immediate: true
 						});
