@@ -29,9 +29,10 @@ export default class extends Module {
 
 
 			const acct = `@${myId}`;console.log(acct);
+			const hostname = config.host.replace(/^https?:\/\//, '').replace(/\/$/, '');
 
 
-			const shellText = msg.text.replace('#シェル芸', '').replace('#shellgei', '').replace(acct, '');
+			const shellText = msg.text.replace('#シェル芸', '').replace('#shellgei', '').replace(acct, '').replace(acct + `@${hostname}`, '');
 
 			const shellgeiBody = { code: shellText , images: [] };
 			const shellgeiOptions = { method: 'POST', body: JSON.stringify(shellgeiBody), headers: { 'Content-Type': 'application/json' } };
