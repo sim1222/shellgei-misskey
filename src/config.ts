@@ -4,6 +4,7 @@ type Config = {
 	master?: string;
 	wsUrl: string;
 	apiUrl: string;
+	shellgeiUrl: string;
 	memoryDir?: string;
 };
 
