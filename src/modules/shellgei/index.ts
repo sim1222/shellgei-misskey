@@ -48,6 +48,9 @@ export default class extends Module {
 
 				} catch (e) {
 					console.log(e);
+					msg.reply(`エラーが発生しました。\n${e}`, {
+						immediate: true
+					});
 				}
 			})();
 
