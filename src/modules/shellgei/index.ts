@@ -17,9 +17,7 @@ export default class extends Module {
 		};
 	}
 
-	function log(msg: string): void {
-		_log(`[Boot]: ${msg}`);
-	}
+
 
 	@autobind
 	private async mentionHook(msg: Message) {
@@ -41,7 +39,7 @@ export default class extends Module {
 
 
 			const shellText = msg.text.replace('#シェル芸', '').replace('#shellgei', '').replace(acct, '').replace(hostnameat, '');
-			log(chalk.green(`[${msg.id}] ${msg.user.name}@${msg.user.host}`));
+			this.log(chalk.green(`[${msg.id}] ${msg.user.name}@${msg.user.host}`));
 			const shellgeiBody = { code: shellText , images: [] };
 			const shellgeiOptions = { method: 'POST', body: JSON.stringify(shellgeiBody), headers: { 'Content-Type': 'application/json' } };
 			const shellgeiURL = `localhost:29999/api/shellgei`;
