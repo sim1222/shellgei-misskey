@@ -78,12 +78,14 @@ export default class extends Module {
 					const shellgeiResultStdOut = shellgeiResultJson.stdout;
 					const shellgeiResultStdErr = shellgeiResultJson.stderr;
 
+					const shellgeiResultText = shellgeiResultStdOut + shellgeiResultStdErr;
+
 					const shellgeiResultImages = shellgeiResultJson.images;
 
 					const image = await uploadImage(shellgeiResultImages);
 
 
-					if (shellgeiResultStdOut === "" && shellgeiResultStdErr === ""){
+					if (shellgeiResultText === ""){
 						msg.reply(`結果がありません`, {
 							immediate: true,
 							file: await image()
@@ -91,17 +93,15 @@ export default class extends Module {
 						return;
 					}
 
-					if (shellgeiResultStdOut + shellgeiResultStdErr > maxOutLength) {
-						let befStr = shellgeiResultStdOut + shellgeiResultStdErr;
-						let aftStr = befStr.substr(0, maxOutLength - 16) + "...";
-						aftStr = aftStr + "一部のみ表示しています";
+					if (shellgeiResultText > maxOutLength) {
+						let aftStr = shellgeiResultText.substr(0, maxOutLength - 30) + "\n...一部のみ表示しています";
 						msg.reply(aftStr, {
 							immediate: true,
 							file: await image()
 						});
 						return;
 					}	else {
-						msg.reply(shellgeiResultStdOut + shellgeiResultStdErr, {
+						msg.reply(shellgeiResultText, {
 							immediate: true,
 							file: await image()
 						});
