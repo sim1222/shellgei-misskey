@@ -45,10 +45,9 @@ export default class extends Module {
 
 			await (async() => {
 				let length = 0;
-				if (msg.files == null) return;
-				msg.files.map(async f => {
-					const res = await fetch(f.url)
-														.then(res => res.buffer())
+				if (msg.files == null || msg.files.length == 0) return;
+				msg.files.map(async file => {
+					const res = await fetch(file.url).then(res => res.buffer())
 					const base64 = buffer.Buffer.from(res).toString('base64');
 					const image = {
 						[length]: base64
@@ -58,6 +57,7 @@ export default class extends Module {
 				});
 			});
 
+			console.log(images);
 
 
 			const shellText = msg.text.replace('#シェル芸', '').replace('#shellgei', '').replace(acct, '').replace(hostnameat, '');
