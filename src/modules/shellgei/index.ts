@@ -3,6 +3,9 @@ import Module from '@/module';
 import Message from '@/message';
 import config from "@/config";
 import fetch from 'node-fetch';
+import * as buffer from "buffer";
+import {Buffer} from "buffer";
+import {randomUUID} from "crypto";
 
 
 
@@ -36,6 +39,7 @@ export default class extends Module {
 			const hostnameat = `@${hostname}`;
 
 
+			const maxInputLength = 280
 
 
 			const shellText = msg.text.replace('#シェル芸', '').replace('#shellgei', '').replace(acct, '').replace(hostnameat, '');
@@ -45,19 +49,58 @@ export default class extends Module {
 			const shellgeiURL = config.shellgeiUrl;
 
 
+
+			const maxOutLength = 8192;
+
+			const uploadImage = (shellgeiResultImages: any) => async () => {
+				if (shellgeiResultImages.length === 0) return;
+				const data = Buffer.from(shellgeiResultImages[0].image, 'base64');
+				const file = await this.ai.upload(data, {
+					filename: `${randomUUID().toString()}.${shellgeiResultImages[0].format}`,
+					contentType: `image/${shellgeiResultImages[0].format}`
+				});
+				return file;
+			}
+
+
+
 			await (async () => {
 				try {
+
+					if (shellText.length > maxInputLength) {
+						msg.reply(`シェル芸は ${maxInputLength} 文字以内です。`);
+						return;
+					}
+
+
 					const shellgeiResult = await fetch(shellgeiURL, shellgeiOptions);
 					const shellgeiResultJson: any = await shellgeiResult.json();
 					const shellgeiResultStdOut = shellgeiResultJson.stdout;
 					const shellgeiResultStdErr = shellgeiResultJson.stderr;
+
+					const shellgeiResultImages = shellgeiResultJson.images;
+
+					const image = await uploadImage(shellgeiResultImages);
+
+
 					if (shellgeiResultStdOut === "" && shellgeiResultStdErr === ""){
 						msg.reply(`結果がありません`, {
 							immediate: true
 						});
-					} else {
+					}
+
+					if (shellgeiResultStdOut + shellgeiResultStdErr > maxOutLength) {
+						let befStr = shellgeiResultStdOut + shellgeiResultStdErr;
+						let aftStr = befStr.substr(0, maxOutLength - 14) + "...";
+						aftStr = aftStr + "一部のみ表示しています";
+						msg.reply(aftStr, {
+							immediate: true,
+							file: await image()
+						});
+					}	else {
 						msg.reply(shellgeiResultStdOut + shellgeiResultStdErr, {
-							immediate: true
+							immediate: true,
+							file: await image()
 						});
 					}
 
