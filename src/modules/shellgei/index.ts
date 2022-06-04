@@ -93,7 +93,7 @@ export default class extends Module {
 						return;
 					}
 
-					if (shellgeiResultText > maxOutLength) {
+					if (shellgeiResultText.length > maxOutLength) {
 						let aftStr = shellgeiResultText.substr(0, maxOutLength - 30) + "\n...一部のみ表示しています";
 						msg.reply(aftStr, {
 							immediate: true,
