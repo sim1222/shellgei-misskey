@@ -34,6 +34,10 @@ export default class Message {
 		return this.messageOrNote.renoteId;
 	}
 
+	public get files(): any[] | null {
+		return this.messageOrNote.files;
+	}
+
 	/**
 	 * メンション部分を除いたテキスト本文
 	 */

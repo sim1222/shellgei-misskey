@@ -41,10 +41,28 @@ export default class extends Module {
 
 			const maxInputLength = 280
 
+			let images:object[] = [];
+
+			await (async() => {
+				let length = 0;
+				if (msg.files == null) return;
+				msg.files.map(async f => {
+					const res = await fetch(f.url)
+														.then(res => res.buffer())
+					const base64 = buffer.Buffer.from(res).toString('base64');
+					const image = {
+						[length]: base64
+					}
+					images.push(image);
+					length++;
+				});
+			});
+
+
 
 			const shellText = msg.text.replace('#シェル芸', '').replace('#shellgei', '').replace(acct, '').replace(hostnameat, '');
 			this.log(shellText);
-			const shellgeiBody = { code: shellText , images: [] };
+			const shellgeiBody = { code: shellText , images };
 			const shellgeiOptions = { method: 'POST', body: JSON.stringify(shellgeiBody), headers: { 'Content-Type': 'application/json' } };
 			const shellgeiURL = config.shellgeiUrl;
 
