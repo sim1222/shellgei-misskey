@@ -53,6 +53,7 @@ export default class extends Module {
 						[length]: base64
 					}
 					images.push(image);
+					console.log("push image");
 					length++;
 				});
 			});
