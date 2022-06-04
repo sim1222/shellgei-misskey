@@ -43,7 +43,7 @@ export default class extends Module {
 
 			let images:object[] = [];
 
-			await (async() => {
+			const imageSet = await (async() => {
 				let length = 0;
 				if (msg.files == null || msg.files.length == 0) return;
 				msg.files.map(async file => {
@@ -57,6 +57,7 @@ export default class extends Module {
 				});
 			});
 
+			await imageSet();
 			console.log(images);
 
 
