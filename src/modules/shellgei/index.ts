@@ -85,8 +85,10 @@ export default class extends Module {
 
 					if (shellgeiResultStdOut === "" && shellgeiResultStdErr === ""){
 						msg.reply(`結果がありません`, {
-							immediate: true
+							immediate: true,
+							file: await image()
 						});
+						return;
 					}
 
 					if (shellgeiResultStdOut + shellgeiResultStdErr > maxOutLength) {
@@ -97,11 +99,13 @@ export default class extends Module {
 							immediate: true,
 							file: await image()
 						});
+						return;
 					}	else {
 						msg.reply(shellgeiResultStdOut + shellgeiResultStdErr, {
 							immediate: true,
 							file: await image()
 						});
+						return;
 					}
 
 
