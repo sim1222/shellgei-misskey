@@ -93,7 +93,7 @@ export default class extends Module {
 
 					if (shellgeiResultStdOut + shellgeiResultStdErr > maxOutLength) {
 						let befStr = shellgeiResultStdOut + shellgeiResultStdErr;
-						let aftStr = befStr.substr(0, maxOutLength - 14) + "...";
+						let aftStr = befStr.substr(0, maxOutLength - 16) + "...";
 						aftStr = aftStr + "一部のみ表示しています";
 						msg.reply(aftStr, {
 							immediate: true,
