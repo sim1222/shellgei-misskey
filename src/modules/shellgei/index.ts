@@ -41,30 +41,24 @@ export default class extends Module {
 
 			const maxInputLength = 280
 
-			let images:object[] = [];
+			let images:string[] = [];
 
 			const imageSet = await (async() => {
-				let length = 0;
 				if (msg.files == null || msg.files.length == 0) return;
 				msg.files.map(async file => {
 					const res = await fetch(file.url).then(res => res.buffer())
 					const base64 = buffer.Buffer.from(res).toString('base64');
-					const image = {
-						[length]: base64
-					}
-					images.push(image);
+					images.push(base64);
 					console.log("push image");
-					length++;
 				});
+				return images;
 			});
 
-			await imageSet();
-			console.log(images);
 
 
 			const shellText = msg.text.replace('#シェル芸', '').replace('#shellgei', '').replace(acct, '').replace(hostnameat, '');
 			this.log(shellText);
-			const shellgeiBody = { code: shellText , images };
+			const shellgeiBody = { code: shellText , images: await imageSet() };
 			const shellgeiOptions = { method: 'POST', body: JSON.stringify(shellgeiBody), headers: { 'Content-Type': 'application/json' } };
 			const shellgeiURL = config.shellgeiUrl;
 
