@@ -43,10 +43,11 @@ export default class extends Module {
 
 			let images:string[] = [];
 
-			const imageSet = await (async() => {
-				if (msg.files == null || msg.files.length == 0) return;
-				msg.files.map(async file => {
-					const res = await fetch(file.url).then(res => res.buffer())
+			const imageSet = (async () => {
+				if (msg.files == null || msg.files.length == 0)
+					return;
+				msg.files.map(async (file) => {
+					const res = await fetch(file.url).then(res => res.buffer());
 					const base64 = buffer.Buffer.from(res).toString('base64');
 					images.push(base64);
 					console.log("push image");
