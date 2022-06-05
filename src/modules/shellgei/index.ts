@@ -4,8 +4,8 @@ import Message from '@/message';
 import config from "@/config";
 import fetch from 'node-fetch';
 import * as buffer from "buffer";
-import {Buffer} from "buffer";
-import {randomUUID} from "crypto";
+import { Buffer } from "buffer";
+import { randomUUID } from "crypto";
 
 
 
@@ -33,37 +33,13 @@ export default class extends Module {
 			const myInfoJson: any = await myInfo.json();
 			const myId = myInfoJson.username;
 
-
 			const acct = `@${myId}`;
 			const hostname = config.host.replace(/^https?:\/\//, '').replace(/\/$/, '');
 			const hostnameat = `@${hostname}`;
 
-
 			const maxInputLength = 280
 
-			let images:string[] = [];
-
-			const imageSet = (async () => {
-				if (msg.files == null || msg.files.length == 0)
-					return;
-				msg.files.map(async (file) => {
-					const res = await fetch(file.url).then(res => res.buffer());
-					const base64 = buffer.Buffer.from(res).toString('base64');
-					images.push(base64);
-					console.log("push image");
-				});
-				return images;
-			});
-
-
-
-			const shellText = msg.text.replace('#シェル芸', '').replace('#shellgei', '').replace(acct, '').replace(hostnameat, '');
-			this.log(shellText);
-			const shellgeiBody = { code: shellText , images: await imageSet() };
-			const shellgeiOptions = { method: 'POST', body: JSON.stringify(shellgeiBody), headers: { 'Content-Type': 'application/json' } };
-			const shellgeiURL = config.shellgeiUrl;
-
-
+			let images: string[] = [];
 
 			const maxOutLength = 8192;
 
@@ -77,60 +53,87 @@ export default class extends Module {
 				return file;
 			}
 
+			const imageSet = (async () => {
+				if (msg.files == null || msg.files.length == 0) return;
+				
+				const promises = msg.files.map(async (file) => {
+					const res = await fetch(file.url).then(res => res.buffer());
+					const base64 = buffer.Buffer.from(res).toString('base64');
+					images.push(base64);
+					console.log("push image");
+				});
+
+				await Promise.all(promises)
+			});
 
 
-			await (async () => {
-				try {
+			const shellText = msg.text.replace('#シェル芸', '').replace('#shellgei', '').replace(acct, '').replace(hostnameat, '');
 
-					if (shellText.length > maxInputLength) {
-						msg.reply(`シェル芸は ${maxInputLength} 文字以内です。`);
-						return;
-					}
+			const shellgeiURL = config.shellgeiUrl;
 
 
-					const shellgeiResult = await fetch(shellgeiURL, shellgeiOptions);
-					const shellgeiResultJson: any = await shellgeiResult.json();
-					const shellgeiResultStdOut = shellgeiResultJson.stdout;
-					const shellgeiResultStdErr = shellgeiResultJson.stderr;
+			if (shellText.length > maxInputLength) {
+				msg.reply(`シェル芸は ${maxInputLength} 文字以内です。`);
+				return true;
+			}
 
-					const shellgeiResultText = shellgeiResultStdOut + shellgeiResultStdErr;
+			try {
 
-					const shellgeiResultImages = shellgeiResultJson.images;
+				await imageSet();
 
-					const image = await uploadImage(shellgeiResultImages);
+				const shellgeiBody = { code: shellText, images };
+				const shellgeiOptions = { method: 'POST', body: JSON.stringify(shellgeiBody), headers: { 'Content-Type': 'application/json' } };
 
+				const shellgeiResult = await fetch(shellgeiURL, shellgeiOptions);
 
-					if (shellgeiResultText === ""){
-						msg.reply(`結果がありません`, {
-							immediate: true,
-							file: await image()
-						});
-						return;
-					}
-
-					if (shellgeiResultText.length > maxOutLength) {
-						let aftStr = shellgeiResultText.substr(0, maxOutLength - 30) + "\n...一部のみ表示しています";
-						msg.reply(aftStr, {
-							immediate: true,
-							file: await image()
-						});
-						return;
-					}	else {
-						msg.reply(shellgeiResultText, {
-							immediate: true,
-							file: await image()
-						});
-						return;
-					}
-
-
-				} catch (e) {
-					console.log(e);
-					msg.reply(`エラーが発生しました。\n${e}`, {
-						immediate: true
-					});
+				if (!shellgeiResult.ok) {
+					msg.reply(`エラーが発生しました。`);
 				}
-			})();
+
+				const shellgeiResultJson: any = await shellgeiResult.json();
+				const shellgeiResultStdOut = shellgeiResultJson.stdout;
+				const shellgeiResultStdErr = shellgeiResultJson.stderr;
+
+				const shellgeiResultText = shellgeiResultStdOut + shellgeiResultStdErr;
+
+				const shellgeiResultImages = shellgeiResultJson.images;
+
+				const image = uploadImage(shellgeiResultImages);
+
+
+
+
+				if (shellgeiResultText === "") {
+					msg.reply(`結果がありません`, {
+						immediate: true,
+						file: await image()
+					});
+					return true;
+				}
+
+				if (shellgeiResultText.length > maxOutLength) {
+					let aftStr = shellgeiResultText.substr(0, maxOutLength - 30) + "\n...一部のみ表示しています";
+					msg.reply(aftStr, {
+						immediate: true,
+						file: await image()
+					});
+					return true;
+				} else {
+					msg.reply(shellgeiResultText, {
+						immediate: true,
+						file: await image()
+					});
+					return true;
+				}
+
+
+			} catch (e) {
+				console.log(e);
+				msg.reply(`エラーが発生しました。\n${e}`, {
+					immediate: true
+				});
+			}
+
 
 
 			return true;
