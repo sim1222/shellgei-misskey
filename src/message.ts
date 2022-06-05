@@ -8,6 +8,7 @@ import { User } from '@/misskey/user';
 import includes from '@/utils/includes';
 import or from '@/utils/or';
 import config from '@/config';
+import {MisskeyFile} from "@/misskey/file";
 
 export default class Message {
 	private ai: 藍;
@@ -32,6 +33,10 @@ export default class Message {
 
 	public get quoteId(): string | null {
 		return this.messageOrNote.renoteId;
+	}
+
+	public get files(): MisskeyFile[] | null {
+		return this.messageOrNote.files;
 	}
 
 	/**
